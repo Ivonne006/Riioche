@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riioche — Repostería Artesanal</title>
+  <style>
+    :root {
+      --bg-color: #fdfbf7;
+      --text-main: #3b2f2f;
+      --accent-color: #b07d62;
+      --accent-hover: #96664d;
+      --card-bg: #ffffff;
+      --border-color: #f0e9e1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header Minimalista y Responsivo */
+    header {
+      background-color: rgba(253, 251, 247, 0.95);
+      backdrop-filter: blur(5px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2rem;
+      position: relative;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-main);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-color);
+    }
+
+    /* Botón Menú Móvil */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    /* Contenido Principal */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      width: 100%;
+    }
+
+    section {
+      margin-bottom: 4rem;
+      padding-top: 1rem;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 2rem auto;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 400;
+      letter-spacing: 1px;
+      margin-bottom: 0.8rem;
+      color: var(--text-main);
+    }
+
+    .hero p {
+      font-size: clamp(0.95rem, 2vw, 1.05rem);
+      color: #70625a;
+      line-height: 1.6;
+    }
+
+    .page-image {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    }
+
+    /* Layout: Productos + Carrito */
+    .shop-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    /* Tarjetas de Productos */
+    .grid-products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+
+    .card p {
+      color: #70625a;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+
+    .price {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+    }
+
+    /* Botones */
+    .btn {
+      display: inline-block;
+      background-color: var(--text-main);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background-color: var(--accent-color);
+    }
+
+    /* Carrito Lateral */
+    .cart-container {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.8rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      position: sticky;
+      top: 100px;
+    }
+
+    .cart-container h2 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+
+    .cart-items {
+      list-style: none;
+      margin-bottom: 1.5rem;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px dashed var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    .cart-total {
+      font-size: 1.1rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
+    }
+
+    /* Sección Nosotros */
+    .about-text {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      color: #70625a;
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+
+    /* Formulario de Contacto */
+    .form-container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 0.9rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      background-color: #faf8f5;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: auto;
+      color: #8c7b72;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ===================================================
+       REGLAS RESPONSIVAS (MÓVILES Y TABLETAS)
+    =================================================== */
+    @media (max-width: 850px) {
+      .shop-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-container {
+        position: static;
+        order: -1; /* Muestra el carrito arriba en celulares si se agrega algo */
+        margin-bottom: 2rem;
+      }
+    }
+
+    @media (max-width: 650px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-color);
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1.2rem;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      main {
+        padding: 1.5rem 1rem;
+      }
+
+      .page-image {
+        max-height: 250px;
+      }
+
+      .form-container {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <header>
+    <nav>
+      <a href="#inicio" class="logo">Riioche</a>
+      <button class="menu-toggle" id="mobile-menu">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#inicio" onclick="toggleMenu()">Inicio</a></li>
+        <li><a href="#productos" onclick="toggleMenu()">Productos</a></li>
+        <li><a href="#contacto" onclick="toggleMenu()">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 1. SECCIÓN INICIO -->
+    <section id="inicio">
+      <div class="hero">
+        <h1>Small Batch & Artisanal Baking</h1>
+        <p>Elaborados con ingredientes selectos, mantequilla premium y un toque de hogar en cada creación.</p>
+        <a href="#productos" class="btn" style="margin-top: 1rem;">Ver Sabores</a>
+      </div>
+      <img src="inicio.jpg" alt="Inicio Riioche" class="page-image">
+    </section>
+
+    <!-- 2. SECCIÓN PRODUCTOS + CARRITO -->
+    <section id="productos">
+      <div class="hero">
+        <h1>Nuestros Sabores</h1>
+        <p>Selecciona tus favoritos y añádelos a tu pedido.</p>
+      </div>
+
+      <img src="productos.jpg" alt="Productos Riioche" class="page-image">
+
+      <div class="shop-layout">
+        <!-- Catálogo -->
+        <div class="grid-products">
+          <div class="card">
+            <div>
+              <h3>Pastel Red Velvet</h3>
+              <p>Bizcocho suave de chocolate con cobertura cremosa y trozos de galleta.</p>
+            </div>
+            <div>
+              <div class="price">$350 MXN</div>
+              <button class="btn" style="width: 100%;" onclick="addToCart('Pastel Red Velvet', 350)">Agregar al Carrito</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div>
+              <h3>Caja de Cookies Choice</h3>
+              <p>6 galletas gourmet horneadas con chispas de chocolate premium y nuez.</p>
+            </div>
+            <div>
+              <div class="price">$180 MXN</div>
+              <button class="btn" style="width: 100%;" onclick="addToCart('Caja de Cookies', 180)">Agregar al Carrito</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div>
+              <h3>Tarta de Frutos Rojos</h3>
+              <p>Base crujiente de mantequilla con crema pastelera y frutos frescos.</p>
+            </div>
+            <div>
+              <div class="price">$290 MXN</div>
+              <button class="btn" style="width: 100%;" onclick="addToCart('Tarta Frutos Rojos', 290)">Agregar al Carrito</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div>
+              <h3>Pack Muffins Lotus</h3>
+              <p>Muffins esponjosos rellenos de crema de galleta Biscoff.</p>
+            </div>
+            <div>
+              <div class="price">$210 MXN</div>
+              <button class="btn" style="width: 100%;" onclick="addToCart('Pack Muffins Lotus', 210)">Agregar al Carrito</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carrito -->
+        <div class="cart-container">
+          <h2>🛒 Tu Pedido</h2>
+          <ul id="cart-items" class="cart-items">
+            <li style="color: #999; font-size: 0.9rem; text-align: center; padding: 1rem 0;">El carrito está vacío</li>
+          </ul>
+          <div class="cart-total">
+            <span>Total:</span>
+            <span id="cart-total">$0 MXN</span>
+          </div>
+          <button class="btn" style="width: 100%;" onclick="checkout()">Finalizar Pedido</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SECCIÓN NOSOTROS -->
+    <section id="nosotros">
+      <div class="hero">
+        <h1>A Taste of Home</h1>
+      </div>
+      <img src="nosotros.jpg" alt="Nosotros Riioche" class="page-image">
+      <div class="about-text">
+        <p>En <strong>Riioche</strong> creemos que cada postre cuenta una historia. Cuidamos cada detalle desde la selección de los insumos hasta el empaque final, asegurando una experiencia inolvidable en cada bocado.</p>
+      </div>
+    </section>
+
+    <!-- 4. SECCIÓN CONTACTO -->
+    <section id="contacto">
+      <div class="hero">
+        <h1>Ponte en Contacto</h1>
+        <p>¿Tienes alguna duda o quieres cotizar un pedido especial? Escríbenos.</p>
+      </div>
+      <img src="contacto.jpg" alt="Contacto Riioche" class="page-image">
+      <div class="form-container">
+        <form class="form-group">
+          <input type="text" placeholder="Tu Nombre" required>
+          <input type="email" placeholder="Correo Electrónico" required>
+          <textarea placeholder="Cuéntanos sobre tu pedido o consulta..." rows="4" required></textarea>
+          <button type="button" class="btn" style="width: 100%;">Enviar Mensaje</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Riioche — Repostería Artesanal. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    let cart = [];
+    let total = 0;
+
+    // Menú desplegable móvil
+    const menuToggle = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-links');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+
+    function toggleMenu() {
+      if (window.innerWidth <= 650) {
+        navLinks.classList.remove('show');
+      }
+    }
+
+    // Funciones de Carrito
+    function addToCart(productName, price) {
+      cart.push({ name: productName, price: price });
+      total += price;
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const cartItemsContainer = document.getElementById('cart-items');
+      const cartTotalContainer = document.getElementById('cart-total');
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<li style="color: #999; font-size: 0.9rem; text-align: center; padding: 1rem 0;">El carrito está vacío</li>';
+      } else {
+        cartItemsContainer.innerHTML = '';
+        cart.forEach((item) => {
+          const li = document.createElement('li');
+          li.className = 'cart-item';
+          li.innerHTML = `
+            <span>${item.name}</span>
+            <span><strong>$${item.price}</strong></span>
+          `;
+          cartItemsContainer.appendChild(li);
+        });
+      }
+
+      cartTotalContainer.innerText = `$${total} MXN`;
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        alert('Tu carrito está vacío. Agrega productos antes de finalizar.');
+      } else {
+        alert(`¡Gracias por tu pedido! Total a pagar: $${total} MXN.`);
+        cart = [];
+        total = 0;
+        updateCartUI();
+      }
+    }
+  </script>
+
+</body>
+</html>
